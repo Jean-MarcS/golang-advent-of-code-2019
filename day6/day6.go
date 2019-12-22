@@ -21,6 +21,57 @@ func satellitesNumber(satellites map[string][]string, planet string, deep int) i
 	return total
 }
 
+func reachable(satellites map[string][]string, currentPlanet string, testingPlanet string) (bool, int) {
+
+	distance := 1
+	found := false
+	// Check if planet has other planets orbiting around
+	if len(satellites[currentPlanet]) > 0 {
+		for _, p := range satellites[currentPlanet] {
+			found, distance = reachable(satellites, p, testingPlanet)
+			if found {
+				distance++
+				break
+			}
+		}
+	} else {
+		if currentPlanet == testingPlanet {
+			distance = 0
+			found = true
+		}
+	}
+
+	return found, distance
+}
+
+func bothPossible(satellites map[string][]string, planet string) (bool, int) {
+	foundYou, distanceYou := reachable(satellites, planet, "YOU")
+	foundSanta, distanceSanta := reachable(satellites, planet, "SAN")
+
+	if foundYou && foundSanta {
+		return true, distanceYou + distanceSanta - 2
+	} else {
+		return false, 0
+	}
+}
+
+func shortestDistance(satellites map[string][]string, planet string) int {
+
+	found, distance := bothPossible(satellites, planet)
+	if found {
+		if len(satellites[planet]) > 0 {
+			for _, p := range satellites[planet] {
+				distanceNew := shortestDistance(satellites, p)
+				if distanceNew < distance {
+					distance = distanceNew
+				}
+			}
+		}
+		return distance
+	}
+	return 99999 // Dumb high value
+}
+
 func main() {
 	file, err := os.Open("day6.data")
 	if err != nil {
@@ -52,4 +103,7 @@ func main() {
 
 	fmt.Print("Part 1 result : ")
 	fmt.Println(satellitesNumber(satellites, "COM", 0))
+	fmt.Print("Part 2 result : ")
+	fmt.Println(shortestDistance(satellites, "COM"))
+
 }
