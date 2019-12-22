@@ -66,28 +66,14 @@ func getIntersection(w1_1 wireSection, w2_1 wireSection, w1_2 wireSection, w2_2 
 	if w1_2.direction == 0 {
 		if between(w1_1.p.col, w2_1.p.col, w2_2.p.col) {
 			if between(w2_1.p.row, w1_1.p.row, w1_2.p.row) {
-				/*fmt.Println("Trouvé 1")
-				fmt.Println(w1_1)
-				fmt.Println(w2_1)
-				fmt.Println(w1_2)
-				fmt.Println(w2_2)
-				fmt.Print(w2_1.p.row)
-				fmt.Print(" - ")
-				fmt.Println(w1_1.p.col)*/
+
 				return w2_1.p.row, w1_1.p.col
 			}
 		}
 	} else {
 		if between(w2_2.p.col, w1_1.p.col, w1_2.p.col) {
 			if between(w1_1.p.row, w2_1.p.row, w2_2.p.row) {
-				/*fmt.Println("Trouvé 2")
-				fmt.Println(w1_1)
-				fmt.Println(w2_1)
-				fmt.Println(w1_2)
-				fmt.Println(w2_2)
-				fmt.Print(w1_1.p.row)
-				fmt.Print(" - ")
-				fmt.Println(w2_1.p.col)*/
+
 				return w1_1.p.row, w2_1.p.col
 			}
 		}
@@ -113,7 +99,7 @@ func main() {
 	const totalSize = 301
 
 	scanner := bufio.NewScanner(file)
-	//	var tissu [1000][1000]int
+
 	var wires [2][totalSize + 1]wireSection
 	row := 0
 	col := 0
@@ -148,9 +134,6 @@ func main() {
 		indexWire++
 	}
 
-	fmt.Println(wires[0])
-	fmt.Println(wires[1])
-
 	// Check cross points
 	minDistance := 999999 // random high value
 	distance := 0
@@ -163,38 +146,22 @@ func main() {
 		w2Length = 0
 		// Check each segment of wire 1 with all segments of wire 2
 		for indexW2 := 1; indexW2 <= totalSize; indexW2++ {
-			fmt.Print("w2Length : ")
-			fmt.Println(w2Length)
+
 			// Check if diferent direction
 			if wires[0][indexW1].direction != wires[1][indexW2].direction {
 				row, col = getIntersection(wires[0][indexW1-1], wires[1][indexW2-1], wires[0][indexW1], wires[1][indexW2])
 				distance = Abs(row) + Abs(col)
-				//fmt.Println(distance)
 
 				if distance != 0 {
 					wireLength = w1Length + w2Length
 					// Add distance between last point and intersection
 					wireLength += Abs(wires[0][indexW1-1].p.col-col) + Abs(wires[0][indexW1-1].p.row-row)
 					wireLength += Abs(wires[1][indexW2-1].p.col-col) + Abs(wires[1][indexW2-1].p.row-row)
-					fmt.Print("Length : ")
-					fmt.Print(w1Length)
-					fmt.Print(" - ")
-					fmt.Print(w2Length)
-					fmt.Print(" - ")
-					fmt.Println(wireLength)
+
 					if wireLength < minWireLength {
 						minWireLength = wireLength
 					}
 					if distance < minDistance {
-						if row != 0 && col != 0 {
-							fmt.Print("Distance : ")
-							fmt.Print(row)
-							fmt.Print(" - ")
-							fmt.Print(col)
-							fmt.Print(" - ")
-							fmt.Println(distance)
-						}
-
 						minDistance = distance
 					}
 
@@ -207,8 +174,9 @@ func main() {
 		w1Length += Abs(wires[0][indexW1].p.col-wires[0][indexW1-1].p.col) + Abs(wires[0][indexW1].p.row-wires[0][indexW1-1].p.row)
 
 	}
-	/*fmt.Println(goodCol)
-	fmt.Println(goodRow)*/
+
+	fmt.Print("Part 1 result : ")
 	fmt.Println(minDistance)
+	fmt.Print("Part 2 result : ")
 	fmt.Println(minWireLength)
 }
