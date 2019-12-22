@@ -70,6 +70,8 @@ func main() {
 		}
 	}
 
+	fmt.Print("Part 1 result : ")
 	fmt.Println(totalPwdPart1)
+	fmt.Print("Part 2 result : ")
 	fmt.Println(totalPwdPart2)
 }
