@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-func orbitsNumber(orbits map[string][]string, planet string, deep int) int {
+func satellitesNumber(satellites map[string][]string, planet string, deep int) int {
 
 	total := deep
 	// Check if planet has other planets orbiting around
-	if len(orbits[planet]) > 0 {
-		for _, p := range orbits[planet] {
-			total += orbitsNumber(orbits, p, deep+1)
+	if len(satellites[planet]) > 0 {
+		for _, p := range satellites[planet] {
+			total += satellitesNumber(satellites, p, deep+1)
 		}
 	}
 
@@ -29,7 +29,7 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	orbits := make(map[string][]string)
+	satellites := make(map[string][]string)
 
 	for scanner.Scan() {
 		orbit := scanner.Text()
@@ -39,17 +39,17 @@ func main() {
 			planetB := orbit[pos+1:]
 
 			// Test if exists
-			_, ok := orbits[planetA]
+			_, ok := satellites[planetA]
 
 			if !ok {
-				orbits[planetA] = []string{planetB}
+				satellites[planetA] = []string{planetB}
 			} else {
-				orbits[planetA] = append(orbits[planetA], planetB)
+				satellites[planetA] = append(satellites[planetA], planetB)
 			}
 
 		}
 	}
 
 	fmt.Print("Part 1 result : ")
-	fmt.Println(orbitsNumber(orbits, "COM", 0))
+	fmt.Println(satellitesNumber(satellites, "COM", 0))
 }
