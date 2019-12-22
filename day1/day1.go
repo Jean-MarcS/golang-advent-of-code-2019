@@ -9,12 +9,12 @@ import (
 	"strconv"
 )
 
-func calculeFuel(masse int) int {
+func getFuel(masse int) int {
 	val := int(math.Floor(float64(masse)/3.0)) - 2
 	if val < 0 {
 		return 0
 	} else {
-		return val + calculeFuel(val)
+		return val + getFuel(val)
 	}
 }
 
@@ -29,19 +29,12 @@ func main() {
 	total := 0
 
 	for scanner.Scan() {
-		maString := scanner.Text()
-		//fmt.Println(maString)
-
-		val, _ := strconv.Atoi(maString)
-		total = total + calculeFuel(val)
+		val, _ := strconv.Atoi(scanner.Text())
+		total = total + getFuel(val)
 
 	}
 
-	fmt.Println("Terminé !")
+	fmt.Print("Result : ")
 	fmt.Println(strconv.Itoa(total))
-
-	/*if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}*/
 
 }
