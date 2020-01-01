@@ -7,12 +7,13 @@ import (
 func extractParameters(myList []int, index int) (int, int, int, int) {
 	instruction := myList[index]
 
-	// Didn't use Math.Mod to avoid converting in float64
+	opcode := instruction % 100
+	instruction = instruction / 100
+	param1Mode := instruction % 10
+	instruction = instruction / 10
+	param2Mode := instruction % 10
+	instruction = instruction / 10
 
-	param3Mode := instruction / 10000
-	param2Mode := instruction/1000 - (param3Mode * 10)
-	param1Mode := instruction/100 - (param2Mode * 10) - (param3Mode * 100)
-	opcode := instruction - (param1Mode * 100) - (param2Mode * 1000) - (param3Mode * 10000)
 	param1 := 0
 	param2 := 0
 	param3 := 0
